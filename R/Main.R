@@ -8,7 +8,6 @@ getHistoricalQuote <- function(symbol, exchange, interval = 86400, period = "10Y
   j <- 1
 
   Date <- vector("numeric")
-  UTC <- vector("numeric")
   Local <- vector("numeric")
   Market <- vector("numeric")
   Open <- vector("numeric")
@@ -33,9 +32,6 @@ getHistoricalQuote <- function(symbol, exchange, interval = 86400, period = "10Y
           Date[j] <- absolute_date + as.numeric(temp[1]) * interval
         }
 
-        UTC[j] <- Date[j] %>%
-          as.POSIXct(origin="1970-01-01", tz="UTC") %>%
-          format("%d.%m.%Y %H:%M:%OS")
         Local[j] <- Date[j] %>%
           as.POSIXct(origin="1970-01-01") %>%
           format("%d.%m.%Y %H:%M:%OS")
@@ -56,5 +52,5 @@ getHistoricalQuote <- function(symbol, exchange, interval = 86400, period = "10Y
 
   cat(symbol, "-", substring(url_content[1], nchar("EXCHANGE%3D")+1), "\n", length(Date), "obs.")
 
-  return(data.frame(Date, UTC, Local, Market, Open, High, Low, Close, Volume, stringsAsFactors = FALSE))
+  return(data.frame(Date, Local, Market, Open, High, Low, Close, Volume, stringsAsFactors = FALSE))
 }
