@@ -18,7 +18,7 @@ getHistoricalQuote <- function(symbol, exchange, interval = 86400, period = "10Y
 
   if (length(url_content) > 7)
     for (i in 7:length(url_content)) {
-      if (substr(url_content[i], 1, nchar("TIMEZONE_OFFSET=")) == "TIMEZONE_OFFSET=")
+      if (substr(url_content[i], 1, 1) == "T")# if equals to "TIMEZONE_OFFSET="
         timezone_offset <- url_content[i] %>%
           substring(nchar("TIMEZONE_OFFSET=")+1) %>% as.numeric
       else {
