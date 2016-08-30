@@ -6,13 +6,14 @@
 using namespace Rcpp;
 
 // parseString
-CharacterVector parseString(CharacterVector x);
-RcppExport SEXP GFUAPI_parseString(SEXP xSEXP) {
+CharacterVector parseString(CharacterVector x, int interval);
+RcppExport SEXP GFUAPI_parseString(SEXP xSEXP, SEXP intervalSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
-    __result = Rcpp::wrap(parseString(x));
+    Rcpp::traits::input_parameter< int >::type interval(intervalSEXP);
+    __result = Rcpp::wrap(parseString(x, interval));
     return __result;
 END_RCPP
 }

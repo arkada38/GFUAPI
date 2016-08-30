@@ -6,7 +6,7 @@ using namespace std;
 
 // [[Rcpp::export]]
 
-CharacterVector parseString(CharacterVector x) {
+CharacterVector parseString(CharacterVector x, int interval) {
   int timezone_offset = 0;
   int absolute_date = 0;
   int date = 0;
@@ -33,7 +33,7 @@ CharacterVector parseString(CharacterVector x) {
         date = absolute_date;
       }
       else{
-        date = absolute_date + atoi(temp.c_str());
+        date = absolute_date + atoi(temp.c_str()) * interval;
       }
 
       temp = row.substr(pos + 1);
@@ -68,5 +68,5 @@ parseString(c("EXCHANGE%3DNASDAQ",
               "8,10.21,10.21,9.79,9.85,253297520,1",
               "TIMEZONE_OFFSET=0",
               "9,10,10.24,9.96,10.15,243554661,1",
-              "10,10.4,10.5,10.04,10.09,317006165,1"))
+              "10,10.4,10.5,10.04,10.09,317006165,1"),86400)
 */
