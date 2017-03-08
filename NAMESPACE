@@ -1,3 +1,4 @@
-exportPattern("^[[:alpha:]]+")
-useDynLib(GFUAPI)
+exportPattern("^[^\\.]")
+useDynLib(saca)
 importFrom(Rcpp, evalCpp)
+importFrom(utils, read.table)

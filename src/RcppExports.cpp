@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // parseString
 CharacterVector parseString(CharacterVector x, int interval);
-RcppExport SEXP GFUAPI_parseString(SEXP xSEXP, SEXP intervalSEXP) {
+RcppExport SEXP saca_parseString(SEXP xSEXP, SEXP intervalSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;

@@ -5,7 +5,7 @@
 Downloading historical quote to data.frame
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Downloads a historical quote data to data.frame
 }
 \usage{
 getHistoricalQuote(symbol, exchange, interval = 86400, period = "10Y")

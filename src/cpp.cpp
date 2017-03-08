@@ -4,7 +4,7 @@
 using namespace Rcpp;
 using namespace std;
 
-// [[Rcpp::export]]
+// [[Rcpp::export(name = ".parseString")]]
 
 CharacterVector parseString(CharacterVector x, int interval) {
   int timezone_offset = 0;
@@ -52,7 +52,7 @@ CharacterVector parseString(CharacterVector x, int interval) {
 
 
 /*** R
-parseString(c("EXCHANGE%3DNASDAQ",
+.parseString(c("EXCHANGE%3DNASDAQ",
               "MARKET_OPEN_MINUTE=570",
               "MARKET_CLOSE_MINUTE=960",
               "INTERVAL=86400",
