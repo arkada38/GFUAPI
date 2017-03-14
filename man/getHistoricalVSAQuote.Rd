@@ -1,6 +1,5 @@
 \name{getHistoricalVSAQuote}
 \alias{getHistoricalVSAQuote}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Volume and spread calculations
 }
@@ -8,7 +7,7 @@ Volume and spread calculations
 Analyze a dataframe from getHistoricalQuote function and return a dataframe with VSA columns
 }
 \usage{
-getHistoricalVSAQuote(data, period = 15, standardize = F)
+getHistoricalVSAQuote(data, period = 15)
 }
 \arguments{
   \item{data}{
@@ -16,9 +15,6 @@ The dataframe from getHistoricalQuote function
 }
   \item{period}{
 Number of observations for SMA calculation
-}
-  \item{standardize}{
-True if you want a standardize data
 }
 }
 \value{
@@ -29,8 +25,8 @@ True if you want a standardize data
 \item{Low}{Low prices}
 \item{Close}{Close prices}
 \item{Volume}{Volume}
-\item{B}{Type of bar}
 \item{C}{The relative close of the bar inside the bar}
+\item{B}{Type of bar}
 \item{V}{The relative volume of bar}
 \item{H}{The relative height of bar}
 \item{Ce}{The relative close of bar}
@@ -39,5 +35,5 @@ True if you want a standardize data
 \examples{
 data(aapl)
 head(getHistoricalVSAQuote(aapl))
-str(getHistoricalVSAQuote(aapl, standardize = TRUE))
+summary(getHistoricalVSAQuote(aapl))
 }
