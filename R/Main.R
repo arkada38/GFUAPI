@@ -47,20 +47,20 @@ getHistoricalVSAQuote <- function(data, period = 15) {
 
   for (i in 2:nrow(data)) {
     # Type of bar
-    if (data$Close[i] > data$High[i - 1]) {
-      data$B[i] <- 1.00
-    }
-    else if (data$Close[i] > data$Close[i - 1]) {
-      data$B[i] <- 0.75
-    }
-    else if (data$Close[i] == data$Close[i - 1]) {
-      data$B[i] <- 0.5
-    }
-    else if (data$Close[i] < data$Low[i - 1]) {
-      data$B[i] <- 0.25
-    }
-    else
-      data$B[i] <- 0.00
+    if (data$Low[i] > data$High[i - 1])
+      data$B[i] <- 6/6
+    else if (data$Close[i] > data$High[i - 1])
+      data$B[i] <- 5/6
+    else if (data$Close[i] > data$Close[i - 1])
+      data$B[i] <- 4/6
+    else if (data$Close[i] == data$Close[i - 1])
+      data$B[i] <- 3/6
+    else if (data$High[i] < data$Low[i - 1])
+      data$B[i] <- 0/6
+    else if (data$Close[i] < data$Low[i - 1])
+      data$B[i] <- 1/6
+    else if (data$Close[i] < data$Close[i - 1])
+      data$B[i] <- 2/6
 
     # The difference between closes
     data$Change[i] <- abs(data$Close[i] - data$Close[i - 1])
