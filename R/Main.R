@@ -1,6 +1,7 @@
 # d <- getHistoricalQuote('AAPL', 'NASD')
 # d.vsa <- getVsa(d)
 # d.vsa <- getVsa(d, period = c(8, 15))
+# d.vsa.with.prevs <- getVsaWithPrevious(d.vsa, 3)
 # d <- getHistoricalQuote('GOOGL', 'NASD', interval = 3600, period = '1Y')
 # d <- getHistoricalQuote('gbpusd', 'CURRENCY', interval = 900, period = '3d')
 # head(d, 15)
@@ -152,4 +153,22 @@ getVsa <- function(df, period = 15) {
 
 .getAver <- function(v, period, i) {
   return(mean(v[(i - period + 1):i]))
+}
+
+getVsaWithPrevious <- function(df.vsa.only, n.of.prevs) {
+  # копируем изначальный data.frame
+  df.vsa.only.with.prev <- df.vsa.only
+
+  for (i in 1:n.of.prevs) {
+    # Составляем data.frame со смещением на n.of.prevs записей
+    df.vsa.only.prev.i <- rbind(df.vsa.only[1:i,], df.vsa.only[1:(nrow(df.vsa.only) - i),])
+    # Очищаем записи, для которых значение предыдущих записей неизвестно
+    df.vsa.only.prev.i[1:i,] <- NA
+    # Переименовываем столбцы
+    names(df.vsa.only.prev.i) <- paste0(names(df.vsa.only), "_prev_", i)
+    # Добавляем столбцы к существующему data.frame
+    df.vsa.only.with.prev <- data.frame(df.vsa.only.with.prev, df.vsa.only.prev.i)
+  }
+
+  return(df.vsa.only.with.prev)
 }
