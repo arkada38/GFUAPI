@@ -21,8 +21,7 @@ CharacterVector parseString(CharacterVector x, int interval) {
     // if equals to "TIMEZONE_OFFSET=..."
     if(row.substr(0,1) == "T"){
       timezone_offset = atoi(row.substr(16).c_str());
-      x.erase(i);
-      i--;
+      x.erase(i--);
     }
     else{
       pos = row.find(",");

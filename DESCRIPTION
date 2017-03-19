@@ -1,5 +1,5 @@
 Package: saca
-Version: 1.0.2
+Version: 1.1.0
 Date: 2017-03-08
 Title: Stocks and Currencies Analyzer
 Type: Package
@@ -7,7 +7,7 @@ Authors@R: person("Arkadiy", "Kuznetsov", role = c("aut", "cre"),
                   email = "arkada38@gmail.com")
 Author: Arkadiy Kuznetsov [aut, cre]
 Maintainer: Arkadiy Kuznetsov <arkada38@gmail.com>
-Depends: R (>= 3.1.0)
+Depends: R (>= 3.3.3)
 Description: Stocks and currencies data downloader and analyzer
 License: GPL (>= 2)
 Imports:
