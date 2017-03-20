@@ -1,12 +1,17 @@
-# d <- getHistoricalQuote('AAPL', 'NASD')
 # data(aapl)
 # d <- aapl
+
+# d <- getHistoricalQuote('GOOGL', 'NASD', interval = 3600, period = '1Y')
+# d <- getHistoricalQuote('GBPUSD', 'CURRENCY', interval = 900, period = '3d')
+# d <- getHistoricalQuote('AAPL', 'NASD')
+
 # d.analysis <- getAnalysis(d)
 # d.analysis <- getAnalysis(d, period = c(8, 15))
+
 # d.analysis.with.prevs <- getAnalysisWithPrevious(d.analysis, 3)
-# d <- getHistoricalQuote('GOOGL', 'NASD', interval = 3600, period = '1Y')
-# d <- getHistoricalQuote('gbpusd', 'CURRENCY', interval = 900, period = '3d')
-# head(d, 15)
+
+# d.acctions <- getAction(d, range.up = 0.06, range.down = 0.025)
+# able(d.acctions$action.factor)
 
 getHistoricalQuote <- function(symbol, exchange, interval = 86400, period = "10Y") {
   url <- paste0("https://www.google.com/finance/getprices?q=",
@@ -243,4 +248,54 @@ getAnalysisWithPrevious <- function(df.analysis.only, n.of.prevs) {
   }
 
   return(df.analysis.only.with.prev)
+}
+
+getAction <- function(df, range.up, range.down) {
+  action <- data.frame(
+    action = numeric(nrow(df)),
+    action.factor = factor(nrow(df)),
+    buy = numeric(nrow(df)),
+    nothing = numeric(nrow(df)),
+    sell = numeric(nrow(df))
+  )
+
+  action$action <- 0.5
+  action$action.factor <- "Nothing"
+
+  # целевая прибыль
+  range.up <- 0.06
+  # допустимая просадка
+  range.down <- 0.025
+
+  for (i in 1:(nrow(action) - 1)) {
+    can.buy <- TRUE
+    can.sell <- TRUE
+
+    for (j in (i + 1):nrow(action)) {
+      if (df$Close[i] / df$High[j] - 1 <= -range.down)
+        can.buy <- FALSE
+      else if (df$Close[i] / df$Low[j] - 1 >= range.down)
+        can.sell <- FALSE
+
+      if (!can.buy & !can.sell)
+        break
+
+      if (can.buy & df$Close[i] / df$High[j] - 1 >= range.up) {
+        action$action[i] <- 1
+        action$action.factor[i] <- "Buy"
+        break
+      }
+      else if (can.sell & df$Close[i] / df$Low[j] - 1 <= -range.up) {
+        action$action[i] <- 0
+        action$action.factor[i] <- "Sell"
+        break
+      }
+    }
+  }
+
+  action$buy <- as.numeric(action$action.factor == "Buy")
+  action$sell <- as.numeric(action$action.factor == "Sell")
+  action$nothing <- as.numeric(action$action.factor == "Nothing")
+
+  return(action)
 }
