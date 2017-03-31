@@ -10,7 +10,7 @@
 
 # d.analysis.with.prevs <- getAnalysisWithPrevious(d.analysis, 3)
 
-# d.acctions <- getAction(d, range.up = 0.06, range.down = 0.025)
+# d.actions <- getAction(d, range.up = 0.06, range.down = 0.025)
 # able(d.acctions$action.factor)
 
 getHistoricalQuote <- function(symbol, exchange, interval = 86400, period = "10Y") {
@@ -127,75 +127,25 @@ getAnalysis <- function(df, period = 15) {
     # Необходимо посчитать отклонения от средней скользящей
     # Затем по этим отклонениям по 6-ти балльной шкале
 
-    # Deviations from the mean of open by period
-    analysis.period$open.mean.deviation[i] <- df$Open[i] - .getAver(df$Open, period, i)
+    # Absolute deviations from the mean of open by period
+    analysis.period$open.mean.deviation[i] <- abs(df$Open[i] - .getAver(df$Open, period, i))
 
-    # Deviations from the mean of close by period
-    analysis.period$close.mean.deviation[i] <- df$Close[i] - .getAver(df$Close, period, i)
+    # Absolute deviations from the mean of close by period
+    analysis.period$close.mean.deviation[i] <- abs(df$Close[i] - .getAver(df$Close, period, i))
   }
 
   for (i in (2 * period):nrow(df)) {
     # Relative deviations from the mean of open by period
-    aver.open.mean.deviation <- .getAver(analysis.period$open.mean.deviation, period, i)
-    if (aver.open.mean.deviation > 0) {
-      if (analysis.period$open.mean.deviation[i] > aver.open.mean.deviation * 2.000)
-        analysis.period$relative.open.mean.deviation[i] <- 11/11
-      else if (analysis.period$open.mean.deviation[i] > aver.open.mean.deviation * 1.713)
-        analysis.period$relative.open.mean.deviation[i] <- 10/11
-      else if (analysis.period$open.mean.deviation[i] > aver.open.mean.deviation * 1.148)
-        analysis.period$relative.open.mean.deviation[i] <- 9/11
-      else if (analysis.period$open.mean.deviation[i] > aver.open.mean.deviation * 0.825)
-        analysis.period$relative.open.mean.deviation[i] <- 8/11
-      else if (analysis.period$open.mean.deviation[i] > aver.open.mean.deviation * 0.287)
-        analysis.period$relative.open.mean.deviation[i] <- 7/11
-      else
-        analysis.period$relative.open.mean.deviation[i] <- 6/11
-    }
-    else {
-      if (analysis.period$open.mean.deviation[i] > aver.open.mean.deviation * -2.000)
-        analysis.period$relative.open.mean.deviation[i] <- 0/11
-      else if (analysis.period$open.mean.deviation[i] > aver.open.mean.deviation * -1.713)
-        analysis.period$relative.open.mean.deviation[i] <- 1/11
-      else if (analysis.period$open.mean.deviation[i] > aver.open.mean.deviation * -1.148)
-        analysis.period$relative.open.mean.deviation[i] <- 2/11
-      else if (analysis.period$open.mean.deviation[i] > aver.open.mean.deviation * -0.825)
-        analysis.period$relative.open.mean.deviation[i] <- 3/11
-      else if (analysis.period$open.mean.deviation[i] > aver.open.mean.deviation * -0.287)
-        analysis.period$relative.open.mean.deviation[i] <- 4/11
-      else
-        analysis.period$relative.open.mean.deviation[i] <- 5/11
-    }
+    analysis.period$relative.open.mean.deviation[i] <- .getTwoWayRelativeValue(
+      analysis.period$open.mean.deviation[i],
+      .getAver(analysis.period$open.mean.deviation, period, i)
+    )
 
     # Relative deviations from the mean of close by period
-    aver.close.mean.deviation <- .getAver(analysis.period$close.mean.deviation, period, i)
-    if (aver.close.mean.deviation > 0) {
-      if (analysis.period$close.mean.deviation[i] > aver.close.mean.deviation * 2.000)
-        analysis.period$relative.close.mean.deviation[i] <- 11/11
-      else if (analysis.period$close.mean.deviation[i] > aver.close.mean.deviation * 1.713)
-        analysis.period$relative.close.mean.deviation[i] <- 10/11
-      else if (analysis.period$close.mean.deviation[i] > aver.close.mean.deviation * 1.148)
-        analysis.period$relative.close.mean.deviation[i] <- 9/11
-      else if (analysis.period$close.mean.deviation[i] > aver.close.mean.deviation * 0.825)
-        analysis.period$relative.close.mean.deviation[i] <- 8/11
-      else if (analysis.period$close.mean.deviation[i] > aver.close.mean.deviation * 0.287)
-        analysis.period$relative.close.mean.deviation[i] <- 7/11
-      else
-        analysis.period$relative.close.mean.deviation[i] <- 6/11
-    }
-    else {
-      if (analysis.period$close.mean.deviation[i] > aver.close.mean.deviation * -2.000)
-        analysis.period$relative.close.mean.deviation[i] <- 0/11
-      else if (analysis.period$close.mean.deviation[i] > aver.close.mean.deviation * -1.713)
-        analysis.period$relative.close.mean.deviation[i] <- 1/11
-      else if (analysis.period$close.mean.deviation[i] > aver.close.mean.deviation * -1.148)
-        analysis.period$relative.close.mean.deviation[i] <- 2/11
-      else if (analysis.period$close.mean.deviation[i] > aver.close.mean.deviation * -0.825)
-        analysis.period$relative.close.mean.deviation[i] <- 3/11
-      else if (analysis.period$close.mean.deviation[i] > aver.close.mean.deviation * -0.287)
-        analysis.period$relative.close.mean.deviation[i] <- 4/11
-      else
-        analysis.period$relative.close.mean.deviation[i] <- 5/11
-    }
+    analysis.period$relative.close.mean.deviation[i] <- .getTwoWayRelativeValue(
+      analysis.period$close.mean.deviation[i],
+      .getAver(analysis.period$close.mean.deviation, period, i)
+    )
   }
 
   analysis.period$open.mean.deviation <- NULL
@@ -211,7 +161,7 @@ getAnalysis <- function(df, period = 15) {
   return(mean(v[(i - period + 1):i]))
 }
 
-.getRelativeValue <- function(item, aver) {
+.getRelativeValueOld <- function(item, aver) {
   if (item >= aver * 2.000)
     return(1.0)
   else if (item >= aver * 1.713)
@@ -224,6 +174,16 @@ getAnalysis <- function(df, period = 15) {
     return(0.2)
   else
     return(0.0)
+}
+
+# Возвращает значение от 0 до 1, между 0 и 2-мя средними значениями
+.getRelativeValue <- function(item, aver) {
+  return(min(item / 2 / aver, 1))
+}
+
+# Возвращает значение от 0 до 1, между -2-мя и 2-мя средними значениями
+.getTwoWayRelativeValue <- function(item, aver) {
+  return(min(max(0, (item + 2 * aver) / 4 / aver), 1))
 }
 
 getAnalysisWithPrevious <- function(df.analysis.only, n.of.prevs) {
