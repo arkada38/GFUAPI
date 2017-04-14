@@ -1,9 +1,9 @@
 # data(aapl)
 # d <- aapl
 
-# d <- getHistoricalQuote('GOOGL', 'NASD', interval = 3600, period = '1Y')
-# d <- getHistoricalQuote('GBPUSD', 'CURRENCY', interval = 900, period = '3d')
-# d <- getHistoricalQuote('AAPL', 'NASD')
+# d <- getHistoricalPrices('GOOGL', 'NASD', interval = 3600, period = '1Y')
+# d <- getHistoricalPrices('GBPUSD', 'CURRENCY', interval = 900, period = '3d')
+# d <- getHistoricalPrices('AAPL', 'NASD')
 
 # d.analysis <- getAnalysis(d)
 # d.analysis <- getAnalysis(d, period = c(8, 15))
@@ -13,10 +13,15 @@
 # d.actions <- getAction(d, range.up = 0.06, range.down = 0.025)
 # able(d.acctions$action.factor)
 
-getHistoricalQuote <- function(symbol, exchange, interval = 86400, period = "10Y") {
-  url <- paste0("https://www.google.com/finance/getprices?q=",
-    toupper(symbol), "&x=", toupper(exchange), "&i=", interval,
-    "&p=", period, "&f=d,c,v,k,o,h,l")
+getHistoricalPrices <- function(symbol, exchange = "", interval = 86400, period = "10Y") {
+  if (exchange != "")
+    exchange <- paste0("&x=", toupper(exchange))
+
+  url <- paste0(
+    "https://www.google.com/finance/getprices?q=",
+    toupper(symbol), exchange, "&i=", interval,
+    "&p=", period, "&f=d,c,v,k,o,h,l"
+  )
   url_content <- readLines(url)
 
   if (length(url_content) > 7) {

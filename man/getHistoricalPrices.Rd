@@ -1,14 +1,14 @@
-\name{getHistoricalQuote}
-\alias{getHistoricalQuote}
+\name{getHistoricalPrices}
+\alias{getHistoricalPrices}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Downloading historical quote to data.frame
+Downloading historical prices to data.frame
 }
 \description{
-Downloads a historical quote data to data.frame
+Downloads a historical prices data to data.frame
 }
 \usage{
-getHistoricalQuote(symbol, exchange, interval = 86400, period = "10Y")
+getHistoricalPrices(symbol, exchange, interval = 86400, period = "10Y")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -16,7 +16,7 @@ getHistoricalQuote(symbol, exchange, interval = 86400, period = "10Y")
 The code of the security. For example, GOOG for Google or EURUSD for the Euro/Dollar currency pair.
 }
   \item{exchange}{
-The exchange where the security is listed. For example, NASDAQ for GOOG or CURRENCY for EURUSD.
+The exchange where the security is listed. For example, NASDAQ for GOOG or CURRENCY for EURUSD. Can be empty for stocks.
 }
   \item{interval}{
 A number in seconds. Its minimum value is 60 seconds.
@@ -36,7 +36,7 @@ The period of time from which data will be returned. Always returns the most rec
 }
 
 \examples{
-getHistoricalQuote("AAPL", "NASD")
+getHistoricalPrices("AAPL", "NASD")
 
-getHistoricalQuote("GBPUSD", "CURRENCY", interval = 900, period = "3d")
+getHistoricalPrices("GBPUSD", "CURRENCY", interval = 900, period = "3d")
 }
