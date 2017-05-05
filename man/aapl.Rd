@@ -5,14 +5,12 @@
 Historical quotes of AAPL
 }
 \description{
-A dataset with historical quotes of AAPL from 2007-03-08 to 2017-03-07
+An xts dataset with historical quotes of AAPL from 2007-03-08 to 2017-03-07
 }
 \usage{data("aapl")}
 \format{
-  A data frame with 2517 observations on the following 7 variables.
+  A data frame with 2517 observations on the following 5 variables.
   \describe{
-    \item{\code{UTC_Date}}{a POSIXct}
-    \item{\code{Market_Date}}{a POSIXct}
     \item{\code{Open}}{a numeric vector}
     \item{\code{High}}{a numeric vector}
     \item{\code{Low}}{a numeric vector}

@@ -2,10 +2,10 @@
 \alias{getHistoricalPrices}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Downloading historical prices to data.frame
+Downloading historical prices to xts object
 }
 \description{
-Downloads a historical prices data to data.frame
+Downloads a historical prices data to xts object
 }
 \usage{
 getHistoricalPrices(symbol, exchange, interval = 86400, period = "10Y")
@@ -26,8 +26,6 @@ The period of time from which data will be returned. Always returns the most rec
 }
 }
 \value{
-\item{UTC_Date}{POSIXct UTC Date}
-\item{Market_Date}{POSIXct Market Date}
 \item{Open}{Open prices}
 \item{High}{High prices}
 \item{Low}{Low prices}

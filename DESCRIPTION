@@ -1,5 +1,5 @@
 Package: saca
-Version: 1.1.2
+Version: 1.1.3
 Date: 2017-03-08
 Title: Stocks and Currencies Analyzer
 Type: Package
@@ -12,5 +12,6 @@ Description: Stocks and currencies data downloader and analyzer
 License: GPL (>= 2)
 Imports:
   Rcpp (>= 0.11.0),
-  utils
+  utils,
+  xts
 LinkingTo: Rcpp

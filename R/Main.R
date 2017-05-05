@@ -11,7 +11,7 @@
 # d.analysis.with.prevs <- getAnalysisWithPrevious(d.analysis, 3)
 
 # d.actions <- getAction(d, range.up = 0.06, range.down = 0.025)
-# able(d.acctions$action.factor)
+# table(d.acctions$action.factor)
 
 getHistoricalPrices <- function(symbol, exchange = "", interval = 86400, period = "10Y") {
   if (exchange != "")
@@ -34,11 +34,13 @@ getHistoricalPrices <- function(symbol, exchange = "", interval = 86400, period 
     df$Market_Date <- df$UTC_Date + df$Timezon_offset * 60
 
     df <- data.frame(
-      df$UTC_Date, df$Market_Date, df$Open, df$High, df$Low, df$Close, df$Volume
+      df$Market_Date, df$Open, df$High, df$Low, df$Close, df$Volume
     )
     names(df) <- c(
-      "UTC_Date", "Market_Date", "Open", "High", "Low", "Close", "Volume"
+      "Market_Date", "Open", "High", "Low", "Close", "Volume"
     )
+
+    df <- as.xts(df[, 2:6], df$Market_Date)
 
     return(df)
   } else warning("Incorrect parameters")
@@ -51,6 +53,8 @@ getAnalysis <- function(df, period = 15) {
     type.of.bar = numeric(nrow(df)),
     change.of.closes = numeric(nrow(df))
   )
+
+  df <- as.data.frame(df)
 
   # Height of bar
   analysis$height.of.bar <- df$High - df$Low
@@ -223,6 +227,8 @@ getAction <- function(df, range.up, range.down) {
     nothing = numeric(nrow(df)),
     sell = numeric(nrow(df))
   )
+
+  df <- as.data.frame(df)
 
   action$action <- 0.5
   action$action.factor <- "Nothing"
